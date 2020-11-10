@@ -29,13 +29,13 @@ module.exports = function(RED) {
                         return;
                     }
 
-                    session.getThermostats(locations[0].locationID).then(function(thermostats){
-                        session.getSystemModeStatus(locations[0].locationID).then(function(systemModeStatus){
+                    session.getThermostats(locations[n.location].locationID).then(function(thermostats){
+                        session.getSystemModeStatus(locations[n.location].locationID).then(function(systemModeStatus){
                             // iterate through the devices
-                            for (var deviceId in locations[0].devices) {
+                            for (var deviceId in locations[n.location].devices) {
                                 for(var thermoId in thermostats) {
-                                    if(locations[0].devices[deviceId].zoneID == thermostats[thermoId].zoneId) {
-                                        if(locations[0].devices[deviceId].name  == "") {
+                                    if(locations[n.location].devices[deviceId].zoneID == thermostats[thermoId].zoneId) {
+                                        if(locations[n.location].devices[deviceId].name  == "") {
                                             // Device name is empty
                                             // Probably Hot Water
                                             // Do not store
@@ -44,7 +44,7 @@ module.exports = function(RED) {
                                             var msgout = {
                                                 payload : {
                                                     id: thermostats[thermoId].zoneId,
-                                                    name : locations[0].devices[deviceId].name.toLowerCase(),
+                                                    name : locations[n.location].devices[deviceId].name.toLowerCase(),
                                                     currentTemperature : thermostats[thermoId].temperatureStatus.temperature,
                                                     targetTemperature : thermostats[thermoId].setpointStatus.targetHeatTemperature
                                                 }
